@@ -273,7 +273,6 @@
                 .then(function(registration) {
                     console.log('Service Worker registrado con éxito: ', registration.scope);
                     
-                    // Forzar actualización
                     registration.update();
                     
                     registration.addEventListener('updatefound', () => {
@@ -291,7 +290,6 @@
                     console.log('Error al registrar Service Worker: ', error);
                 });
                 
-                // Verifica si el usuario ya tiene la PWA instalada
                 window.addEventListener('beforeinstallprompt', (e) => {
                     console.log('PWA puede ser instalada');
                 });
@@ -302,5 +300,6 @@
     <script src="main.js"></script>
 </body>
 </html>
+
 
 
