@@ -4,12 +4,11 @@
     <meta charset="utf-8">
     <title>Redirecting...</title>
     <script>
-        // Redirige a la página principal
-        sessionStorage.redirect = location.href;
-        location.replace('/');
+        sessionStorage.redirect = location.pathname;
+        location.replace('./');
     </script>
 </head>
 <body>
-    <p>Redirecting to <a href="/">main page</a>...</p>
+    <p>Redirecting to app...</p>
 </body>
 </html>
