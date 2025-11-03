@@ -1,4 +1,3 @@
-// sw.js - VERSIÓN CORREGIDA
 const CACHE_NAME = 'tareas-pwa-v4';
 const urlsToCache = [
   './',
@@ -21,7 +20,7 @@ self.addEventListener('install', (event) => {
         console.log('Error en cache:', err);
       })
   );
-  self.skipWaiting(); // Añade esto
+  self.skipWaiting();
 });
 
 self.addEventListener('fetch', (event) => {
@@ -47,7 +46,6 @@ self.addEventListener('fetch', (event) => {
             
           return fetchResponse;
         }).catch(() => {
-          // Para SPA, siempre devuelve index.html si falla
           return caches.match('./index.html');
         });
       })
@@ -68,5 +66,5 @@ self.addEventListener('activate', (event) => {
       );
     })
   );
-  self.clients.claim(); // Añade esto
+  self.clients.claim();
 });
