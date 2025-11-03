@@ -263,26 +263,37 @@
     <div id="lista-tareas"></div>
 
     <script>
-               if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('sw.js')
-                .then(function(registration) {
-                    console.log('Service Worker registrado con éxito: ', registration.scope);
-                })
-                .catch(function(error) {
-                    console.log('Error al registrar Service Worker: ', error);
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            // Usa ruta absoluta para GitHub Pages
+            const swUrl = '/sw.js';
+            
+            navigator.serviceWorker.register(swUrl)
+            .then(function(registration) {
+                console.log('Service Worker registrado con éxito: ', registration.scope);
+                
+                // Verifica si hay una nueva versión
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    console.log('Nueva versión del Service Worker encontrada');
                 });
+            })
+            .catch(function(error) {
+                console.log('Error al registrar Service Worker: ', error);
             });
-        }
-        if (window.location.hostname.includes('github.io')) {
-            console.log('Ejecutando en GitHub Pages');
-        }
-    </script>
-
+            
+            // Verifica si el usuario ya tiene la PWA instalada
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('PWA puede ser instalada');
+            });
+        });
+    }
+</script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js"></script>
     <script src="./main.js"></script>
 </body>
 
 </html>
+
 
 
