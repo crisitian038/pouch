@@ -61,14 +61,14 @@ function mostrarTareas() {
         listaTareas.innerHTML = '';
 
         if (tareasFiltradas.length === 0) {
-    listaTareas.innerHTML = `
-        <div class="empty-state">
-            <h3>${vistaActual === 'pendientes' ? ' ¡No hay tareas pendientes!' : ' No hay tareas completadas'}</h3>
-            <p>${vistaActual === 'pendientes' ? 'Agrega una nueva tarea para comenzar' : 'Las tareas completadas aparecerán aquí'}</p>
-        </div>
-    `;
-    return;
-}
+            listaTareas.innerHTML = `
+                <div class="empty-state">
+                    <h3>${vistaActual === 'pendientes' ? ' ¡No hay tareas pendientes!' : ' No hay tareas completadas'}</h3>
+                    <p>${vistaActual === 'pendientes' ? 'Agrega una nueva tarea para comenzar' : 'Las tareas completadas aparecerán aquí'}</p>
+                </div>
+            `;
+            return;
+        }
 
         tareasFiltradas.forEach(tarea => {
             const tareaElement = document.createElement('div');
