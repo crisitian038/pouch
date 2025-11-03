@@ -1,5 +1,6 @@
 const CACHE_NAME = 'tareas-pwa-v4';
 const urlsToCache = [
+  './'
   './index.html',
   './main.js',
   './manifest.json',
@@ -67,5 +68,6 @@ self.addEventListener('activate', (event) => {
   );
   self.clients.claim();
 });
+
 
 
