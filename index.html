@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas PWA</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="apple-touch-icon" href="./images/192.png" sizes="192x192">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#8B5CF6">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #fdf2ff 100%);
+            padding: 16px;
+            max-width: 500px;
+            margin: 0 auto;
+            min-height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            color: #7C3AED;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-shadow: 0 2px 4px rgba(124, 58, 237, 0.1);
+        }
+
+        fieldset {
+            border: 2px solid #8B5CF6;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+
+        legend {
+            font-weight: bold;
+            color: #8B5CF6;
+            padding: 0 12px;
+            font-size: 16px;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #6D28D9;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #DDD6FE;
+            border-radius: 12px;
+            font-size: 16px;
+            background: #FAF5FF;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            border-color: #8B5CF6;
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        button {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        #btnList {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        #btnList:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .tarea-item {
+            background: white;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border-left: 6px solid #8B5CF6;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+            transition: all 0.3s;
+        }
+
+        .tarea-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.15);
+        }
+
+        .tarea-item.completada {
+            border-left-color: #10B981;
+            background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%);
+        }
+
+        .tarea-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .tarea-nombre {
+            font-weight: bold;
+            font-size: 17px;
+            color: #1F2937;
+        }
+
+        .tarea-fecha {
+            color: #6B7280;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tarea-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .btn-completar {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-completar:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-pendiente {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+            flex: 1;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-pendiente:hover {
+            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .tab {
+            flex: 1;
+            padding: 14px;
+            text-align: center;
+            background: #F3F4F6;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #6B7280;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
+            color: white;
+        }
+
+        .tab:not(.active):hover {
+            background: #E5E7EB;
+            color: #4B5563;
+        }
+
+        /* Estado vacío */
+        .empty-state {
+            text-align: center;
+            color: #6B7280;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
+        }
+
+        .empty-state h3 {
+            color: #8B5CF6;
+            margin-bottom: 8px;
+        }
+
+        /* Mejoras visuales adicionales */
+        input::placeholder {
+            color: #9CA3AF;
+        }
+
+        .tarea-item.completada .tarea-nombre {
+            text-decoration: line-through;
+            color: #10B981;
+        }
+
+        .tarea-item.completada .tarea-fecha {
+            color: #10B981;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gestor de Tareas</h1>
+    
+    <fieldset>
+        <legend>➕ Nueva Tarea</legend>
+        <p> 
+            <label for="nombre">Nombre de la tarea</label>
+            <input type="text" id="nombre" placeholder="Escribe tu tarea...">
+        </p>
+        <p>
+            <label for="fecha">Fecha límite</label>
+            <input type="date" id="fecha">
+        </p>
+        <p>
+            <button type="button" id="btnAdd"> Agregar Tarea</button>
+        </p>
+    </fieldset>
+
+    <div class="tabs">
+        <div class="tab active" data-tab="pendientes">Pendientes</div>
+        <div class="tab" data-tab="completadas">Completadas</div>
+    </div>
+
+    <div id="lista-tareas"></div>
+
+    <script>
+        if('serviceWorker' in navigator){
+            window.addEventListener('load', ()=>{
+                navigator.serviceWorker.register('./sw.js')
+                .then(reg =>{
+                    console.log('Service Worker registrado', reg)
+                })
+                .catch(err=>{
+                    console.log('Error al registrar Service Worker', err)
+                })
+            })
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

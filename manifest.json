@@ -1,0 +1,21 @@
+{
+    "name": "Gestor de Tareas PWA",
+    "short_name": "Tareas PWA",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#8B5CF6",
+    "theme_color": "#8B5CF6",
+    "description": "Aplicación para gestionar tareas con funcionalidad offline",
+    "icons": [
+        {
+            "src": "./images/192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./images/512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
