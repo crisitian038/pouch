@@ -2,12 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Gestor de Tareas PWA</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <link rel="apple-touch-icon" href="./images/192.png" sizes="192x192">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gestor Tareas">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#8B5CF6">
     <style>
         * {
@@ -263,37 +265,40 @@
     <div id="lista-tareas"></div>
 
     <script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            // Usa ruta absoluta para GitHub Pages
-            const swUrl = '/sw.js';
-            
-            navigator.serviceWorker.register(swUrl)
-            .then(function(registration) {
-                console.log('Service Worker registrado con éxito: ', registration.scope);
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                const swUrl = './sw.js';
                 
-                // Verifica si hay una nueva versión
-                registration.addEventListener('updatefound', () => {
-                    const newWorker = registration.installing;
-                    console.log('Nueva versión del Service Worker encontrada');
+                navigator.serviceWorker.register(swUrl)
+                .then(function(registration) {
+                    console.log('Service Worker registrado con éxito: ', registration.scope);
+                    
+                    // Forzar actualización
+                    registration.update();
+                    
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        console.log('Nueva versión del Service Worker encontrada');
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'activated') {
+                                console.log('Nuevo Service Worker activado');
+                                window.location.reload();
+                            }
+                        });
+                    });
+                })
+                .catch(function(error) {
+                    console.log('Error al registrar Service Worker: ', error);
                 });
-            })
-            .catch(function(error) {
-                console.log('Error al registrar Service Worker: ', error);
+                
+                // Verifica si el usuario ya tiene la PWA instalada
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    console.log('PWA puede ser instalada');
+                });
             });
-            
-            // Verifica si el usuario ya tiene la PWA instalada
-            window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('PWA puede ser instalada');
-            });
-        });
-    }
-</script>
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js"></script>
     <script src="./main.js"></script>
 </body>
-
 </html>
-
-
-
