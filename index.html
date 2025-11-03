@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Tareas PWA</title>
-    <link rel="manifest" href="./manifest.json">
-    <link rel="apple-touch-icon" href="./images/192.png" sizes="192x192">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/192.png" sizes="192x192">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#8B5CF6">
@@ -263,20 +263,24 @@
     <div id="lista-tareas"></div>
 
     <script>
-        if('serviceWorker' in navigator){
-            window.addEventListener('load', ()=>{
-                navigator.serviceWorker.register('./sw.js')
-                .then(reg =>{
-                    console.log('Service Worker registrado', reg)
+               if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js')
+                .then(function(registration) {
+                    console.log('Service Worker registrado con éxito: ', registration.scope);
                 })
-                .catch(err=>{
-                    console.log('Error al registrar Service Worker', err)
-                })
-            })
+                .catch(function(error) {
+                    console.log('Error al registrar Service Worker: ', error);
+                });
+            });
+        }
+        if (window.location.hostname.includes('github.io')) {
+            console.log('Ejecutando en GitHub Pages');
         }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js"></script>
     <script src="main.js"></script>
 </body>
+
 </html>
