@@ -1,9 +1,9 @@
 const CACHE_NAME = 'tareas-pwa-v4';
 const urlsToCache = [
-  'index.html',
-  'main.js',
-  'manifest.json',
-  'sw.js',
+  './index.html',
+  './main.js',
+  './manifest.json',
+  './sw.js',
   'https://cdn.jsdelivr.net/npm/pouchdb@9.0.0/dist/pouchdb.min.js'
 ];
 
@@ -67,4 +67,5 @@ self.addEventListener('activate', (event) => {
   );
   self.clients.claim();
 });
+
 
