@@ -8,7 +8,6 @@ const tabs = document.querySelectorAll('.tab');
 
 let vistaActual = 'pendientes';
 
-// Configurar fecha mínima como hoy
 inputfecha.min = new Date().toISOString().split('T')[0];
 
 btnAdd.addEventListener('click', (event) => {
@@ -50,12 +49,10 @@ function mostrarTareas() {
     .then((result) => {
         const tareas = result.rows.map(row => row.doc);
         
-        // Filtrar según la vista actual
         const tareasFiltradas = tareas.filter(tarea => 
             vistaActual === 'pendientes' ? tarea.status === 'pendiente' : tarea.status === 'completada'
         );
 
-        // Ordenar por fecha de creación (más recientes primero)
         tareasFiltradas.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion));
 
         listaTareas.innerHTML = '';
@@ -117,5 +114,5 @@ function cambiarStatus(id, nuevoStatus) {
     });
 }
 
-// Cargar tareas al iniciar
 document.addEventListener('DOMContentLoaded', mostrarTareas);
+
