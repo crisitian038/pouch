@@ -7,9 +7,85 @@ const listaTareas = document.getElementById('lista-tareas');
 const tabs = document.querySelectorAll('.tab');
 
 let vistaActual = 'pendientes';
+let deferredPrompt; // Variable para el evento de instalación
 
 inputfecha.min = new Date().toISOString().split('T')[0];
 
+// ===== CÓDIGO DE INSTALACIÓN PWA =====
+window.addEventListener('beforeinstallprompt', (e) => {
+    console.log('PWA puede ser instalada');
+    
+    // Prevenir que el navegador muestre el prompt automático
+    e.preventDefault();
+    
+    // Guardar el evento para usarlo después
+    deferredPrompt = e;
+    
+    // Mostrar botón de instalación
+    mostrarBotonInstalar();
+});
+
+function mostrarBotonInstalar() {
+    // Crear botón de instalación si no existe
+    if (!document.getElementById('btnInstalar')) {
+        const botonInstalar = document.createElement('button');
+        botonInstalar.id = 'btnInstalar';
+        botonInstalar.innerHTML = '📱 Instalar App';
+        botonInstalar.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #FF6B6B 0%, #EE5A24 100%);
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+            z-index: 1000;
+            transition: all 0.3s;
+        `;
+        
+        botonInstalar.addEventListener('click', instalarPWA);
+        document.body.appendChild(botonInstalar);
+    }
+}
+
+async function instalarPWA() {
+    if (!deferredPrompt) {
+        alert('La aplicación ya está instalada o no puede ser instalada en este momento.');
+        return;
+    }
+    
+    // Mostrar el prompt de instalación
+    deferredPrompt.prompt();
+    
+    // Esperar a que el usuario responda
+    const { outcome } = await deferredPrompt.userChoice;
+    
+    console.log(`Usuario ${outcome} la instalación`);
+    
+    if (outcome === 'accepted') {
+        // Ocultar el botón después de la instalación
+        const boton = document.getElementById('btnInstalar');
+        if (boton) boton.style.display = 'none';
+    }
+    
+    // Limpiar la referencia
+    deferredPrompt = null;
+}
+
+// Ocultar el botón si ya está instalado
+window.addEventListener('appinstalled', () => {
+    console.log('PWA instalada correctamente');
+    const boton = document.getElementById('btnInstalar');
+    if (boton) boton.style.display = 'none';
+    deferredPrompt = null;
+});
+
+// ===== FUNCIONALIDAD EXISTENTE DE TAREAS =====
 btnAdd.addEventListener('click', (event) => {
     if (!inputName.value.trim()) {
         alert('Por favor ingresa un nombre para la tarea');
@@ -115,4 +191,3 @@ function cambiarStatus(id, nuevoStatus) {
 }
 
 document.addEventListener('DOMContentLoaded', mostrarTareas);
-
