@@ -280,7 +280,7 @@
                         newWorker.addEventListener('statechange', () => {
                             if (newWorker.state === 'activated') {
                                 console.log('Nuevo Service Worker activado');
-                                window.location.reload();
+                               // window.location.reload();
                             }
                         });
                     });
@@ -299,6 +299,7 @@
     <script src="./main.js"></script>
 </body>
 </html>
+
 
 
 
